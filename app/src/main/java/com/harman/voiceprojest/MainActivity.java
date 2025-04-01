@@ -121,7 +121,6 @@ private void startRecording() {
         Toast.makeText(this, "Recording started", Toast.LENGTH_SHORT).show();
     } catch (IOException e) {
         e.printStackTrace();
-        Log.e(TAG, "startRecording: " + e);
         Toast.makeText(this, "Error starting recording", Toast.LENGTH_SHORT).show();
     }
 }
