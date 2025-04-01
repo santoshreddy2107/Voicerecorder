@@ -78,56 +78,54 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void startRecording() {
-        try {
-            if (mediaRecorder == null) {
-                mediaRecorder = new MediaRecorder();
-            } else {
-                mediaRecorder.reset();
-            }
-
-            // i am using Environment.getExternalStorageDirectory() for SD card path
-            String audioFileName = "/voice_clip.mp4";
-
-
-            if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-
-                audioFilePath = Environment.getExternalStorageDirectory() + "/VoiceProjest" + audioFileName;
-
-
-                File directory = new File(Environment.getExternalStorageDirectory() + "/VoiceProjest");
-                if (!directory.exists()) {
-                    directory.mkdirs();
-                }
-            } else {
-                Toast.makeText(this, "External Storage not available", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-
-            if (audioFilePath == null || audioFilePath.isEmpty()) {
-                Toast.makeText(this, "Error: Invalid file path", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-            mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
-            mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
-            mediaRecorder.setOutputFile(audioFilePath);
-
-            mediaRecorder.prepare();
-            mediaRecorder.start();
-
-            recordButton.setEnabled(false);
-            stopButton.setEnabled(true);
-            replayButton.setEnabled(false);
-            audioFilePathText.setText("Audio File Path: " + audioFilePath);
-            Toast.makeText(this, "Recording started", Toast.LENGTH_SHORT).show();
-        } catch (IOException e) {
-            e.printStackTrace();
-            Toast.makeText(this, "Error starting recording", Toast.LENGTH_SHORT).show();
+private void startRecording() {
+    try {
+        if (mediaRecorder == null) {
+            mediaRecorder = new MediaRecorder();
+        } else {
+            mediaRecorder.reset();
         }
+
+        
+        File directory = new File(getExternalFilesDir(Environment.DIRECTORY_MUSIC), "VoiceProjest");
+
+       
+        if (!directory.exists()) {
+            boolean dirCreated = directory.mkdirs();
+            if (!dirCreated) {
+                Toast.makeText(this, "Failed to create directory", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        }
+
+        
+        audioFilePath = new File(directory, "voice_clip.mp4").getAbsolutePath();
+
+        if (audioFilePath == null || audioFilePath.isEmpty()) {
+            Toast.makeText(this, "Error: Invalid file path", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
+        mediaRecorder.setOutputFile(audioFilePath);
+
+        mediaRecorder.prepare();
+        mediaRecorder.start();
+
+        recordButton.setEnabled(false);
+        stopButton.setEnabled(true);
+        replayButton.setEnabled(false);
+        audioFilePathText.setText("Audio File Path: " + audioFilePath);
+        Toast.makeText(this, "Recording started", Toast.LENGTH_SHORT).show();
+    } catch (IOException e) {
+        e.printStackTrace();
+        Log.e(TAG, "startRecording: " + e);
+        Toast.makeText(this, "Error starting recording", Toast.LENGTH_SHORT).show();
     }
+}
+
 
 
     private void stopRecording() {
