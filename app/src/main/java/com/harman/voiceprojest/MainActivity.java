@@ -152,7 +152,7 @@ private void startRecording() {
             if (mediaPlayer == null) {
                 mediaPlayer = new MediaPlayer();
             } else {
-                mediaPlayer.reset(); // Reset if already initialized
+                mediaPlayer.reset();
             }
 
             mediaPlayer.setDataSource(audioFilePath);
