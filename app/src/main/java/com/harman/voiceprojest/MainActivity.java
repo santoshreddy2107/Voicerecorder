@@ -87,7 +87,7 @@ private void startRecording() {
         }
 
         
-        File directory = new File(getExternalFilesDir(Environment.DIRECTORY_MUSIC), "VoiceProjest");
+        File directory = new File(getExternalFilesDir(Environment.DIRECTORY_MUSIC), "VoiceProject");
 
        
         if (!directory.exists()) {
